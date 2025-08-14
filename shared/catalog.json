@@ -1,0 +1,33 @@
+[
+  {
+    "model": "p_barrel02x",
+    "label": "Barrel",
+    "tags": [
+      "storage",
+      "wood"
+    ]
+  },
+  {
+    "model": "p_crate03x",
+    "label": "Crate",
+    "tags": [
+      "storage",
+      "wood"
+    ]
+  },
+  {
+    "model": "p_cs_lantern04x",
+    "label": "Lantern",
+    "tags": [
+      "light"
+    ]
+  },
+  {
+    "model": "p_table05x",
+    "label": "Table",
+    "tags": [
+      "furniture",
+      "wood"
+    ]
+  }
+]

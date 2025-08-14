@@ -1,0 +1,75 @@
+:root { --bg: rgba(14,14,16,0.86); --panel: rgba(24,24,28,0.92); --text:#e8e8ea; --muted:#9aa0a6; --accent:#e0b36f; }
+*{ box-sizing:border-box; } body{ margin:0; font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,"Noto Sans","Helvetica Neue",sans-serif; color:var(--text); }
+
+/* Catalog */
+#wrap{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; padding:32px; z-index:5000; }
+.panel{ width:min(980px,92vw); height:min(640px,82vh); background:var(--panel); border:1px solid rgba(255,255,255,0.06); border-radius:14px; box-shadow:0 8px 40px rgba(0,0,0,0.45); display:flex; flex-direction:column; overflow:hidden; }
+.topbar{ display:flex; gap:10px; align-items:center; padding:12px; background:rgba(0,0,0,0.25); border-bottom:1px solid rgba(255,255,255,0.06); }
+.topbar input[type="text"]{ flex:1; height:36px; padding:0 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.08); background:rgba(0,0,0,0.35); color:var(--text); outline:none; }
+.btn{ height:36px; padding:0 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:var(--accent); color:#1a1a1a; font-weight:600; cursor:pointer; }
+.list{ position:relative; flex:1; overflow:auto; padding:8px 12px 16px; }
+.row{ display:flex; align-items:center; gap:10px; padding:10px; border-bottom:1px solid rgba(255,255,255,0.05); }
+.row .title{ font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.row .sub{ opacity:.75; font-size:12px; display:flex; align-items:center; gap:8px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.row code{ background:rgba(255,255,255,0.06); padding:1px 6px; border-radius:6px; }
+.row .place{ height:30px; padding:0 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:#e0b36f; color:#1a1a1a; font-weight:700; cursor:pointer; }
+
+/* Reticle overlay */
+#reticle{ position:fixed; inset:0; pointer-events:none; z-index:9999; display:none; color:#eaeaea; font-size:13px; }
+#reticle .dot{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,0.95); box-shadow:0 0 8px rgba(255,255,255,0.7); }
+#reticle.hit .dot{ box-shadow:0 0 14px rgba(224,179,111,0.95), 0 0 22px rgba(224,179,111,0.65); background:rgba(224,179,111,1); }
+.reticle-tip{ position:absolute; right:18px; bottom:18px; background:rgba(10,10,10,0.72); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:8px 10px; display:flex; gap:8px; align-items:center; backdrop-filter: blur(4px); }
+.reticle-tip .keys b{ color:#e0b36f; }
+#reticle-left{ font-weight:800; color:#e57373; margin-right:4px; }
+
+/* Docked Details panel */
+.details{ position:fixed; right:24px; top:50%; transform:translateY(-50%); z-index:9000; pointer-events:none; }
+.details-card{ width:min(420px,92vw); max-height:80vh; overflow:auto; background:rgba(24,24,28,0.92); border:1px solid rgba(255,255,255,0.08); border-radius:14px; box-shadow:0 10px 40px rgba(0,0,0,0.5); padding:14px 14px 12px; pointer-events:auto; }
+.details-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+.details-head h3{ margin:0; font-size:18px; }
+.btn-ghost{ height:32px; padding:0 10px; border-radius:8px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:#e8e8ea; cursor:pointer; }
+.details-grid{ display:grid; gap:10px; grid-template-columns:1fr; }
+.field .label{ opacity:.75; font-size:12px; margin-bottom:2px; }
+.field .value{ font-weight:700; word-break:break-all; }
+.value.row{ display:flex; align-items:center; gap:8px; font-weight:600; }
+.btn-chip{ height:26px; padding:0 8px; border-radius:8px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); color:#e8e8ea; cursor:pointer; }
+.details-actions{ margin-top:10px; display:flex; justify-content:flex-end; }
+.btn-primary{ height:36px; padding:0 14px; border-radius:10px; font-weight:800; background:var(--accent); color:#1a1a1a; border:1px solid rgba(255,255,255,0.08); cursor:pointer; }
+
+/* Placement tooltip (top, only while placing) */
+.placetip{
+  position: fixed;
+  /* lower it so it clears your GPU/VRAM overlay */
+  top: 84px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9500;
+  pointer-events: none;
+
+  /* prettier surface */
+  background: linear-gradient(180deg, rgba(18,18,22,0.88), rgba(12,12,16,0.88));
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  padding: 8px 16px;
+
+  /* typography */
+  font-size: 13px;
+  font-weight: 600;
+  color: #ececec;
+  letter-spacing: .2px;
+
+  /* polish */
+  backdrop-filter: blur(5px);
+  box-shadow: 0 10px 28px rgba(0,0,0,.35);
+
+  /* hidden by default; JS toggles .active */
+  opacity: 0;
+  transform-origin: 50% 0;
+  transition: opacity .18s ease, transform .18s ease;
+}
+.placetip b{ color:#e0b36f; }
+.placetip.active{
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+

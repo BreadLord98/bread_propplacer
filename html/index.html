@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>bread_propplacer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Catalog -->
+  <div id="wrap">
+    <div class="panel">
+      <div class="topbar">
+        <input id="search" type="text" placeholder="Search by name, model, tags…" autocomplete="off" />
+        <button id="btn-close" class="btn">Close</button>
+      </div>
+      <div id="item-list" class="list"></div>
+    </div>
+  </div>
+
+  <!-- Reticle (for /propselect) -->
+  <div id="reticle">
+    <div class="dot"></div>
+    <div class="reticle-tip">
+      <span id="reticle-left">Select</span>
+      <span id="reticle-help">Aim at a placed prop.</span>
+      <span class="keys"><b>G</b> Delete • <b>H</b> Exit</span>
+    </div>
+  </div>
+
+  <!-- Details panel (docked right) -->
+  <div id="details" class="details" style="display:none">
+    <div class="details-card">
+      <div class="details-head">
+        <h3 id="d-title">Prop Details</h3>
+        <button id="d-close" class="btn-ghost" title="Back">Back</button>
+      </div>
+      <div class="details-grid">
+        <div class="field"><div class="label">Item name</div><div id="d-item" class="value"></div></div>
+        <div class="field"><div class="label">Model name</div><div class="value row">
+          <code id="d-model-code"></code><button id="btn-copy-model" class="btn-chip">Copy</button></div></div>
+        <div class="field"><div class="label">Hash</div><div class="value row">
+          <code id="d-hash-code"></code><button id="btn-copy-hash" class="btn-chip">Copy</button></div></div>
+      </div>
+      <div class="details-actions"><button id="btn-place" class="btn-primary">Place Prop</button></div>
+    </div>
+  </div>
+
+  <!-- Top placement tooltip (only while placing) -->
+  <div id="place-tip" class="placetip" style="display:none;">
+    <b>G</b> Place • <b>H</b> Cancel • <b>Q/E</b> Rotate • <b>PgUp/PgDn</b> Raise/Lower • <b>Shift</b> Snap • <b>Delete</b> Grid
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    document.getElementById('btn-close').addEventListener('click', function(){
+      const res = (typeof GetParentResourceName === 'function') ? GetParentResourceName() : 'bread_propplacer';
+      fetch(`https://${res}/catalog_close`, { method:'POST', headers:{'Content-Type':'application/json'}, body:'{}' });
+    });
+    window.addEventListener('keydown', (ev)=>{
+      if (ev.key === 'Escape' && document.getElementById('wrap').style.display !== 'none') {
+        const res = (typeof GetParentResourceName === 'function') ? GetParentResourceName() : 'bread_propplacer';
+        fetch(`https://${res}/catalog_close`, { method:'POST', headers:{'Content-Type':'application/json'}, body:'{}' });
+      }
+    });
+  </script>
+</body>
+</html>
